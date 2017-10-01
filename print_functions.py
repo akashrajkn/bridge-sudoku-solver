@@ -71,16 +71,23 @@ def print_board(b):
             print (b[to_index(x, y, width)], end=" ")
 
 def output_board(b):
-    width = int(sqrt(len(b)))
+    width = int(sqrt(len(b)/2))
     height = width
     ret_str = ""
-    if (width * height != len(b)):
+    if (width * height *2 != len(b)):
         print ("Error! Invalid Board")
         return ""
     for y in range(0, height):
         for x in range(0, width):
-            ret_str += b[to_index(x, y, width)] + " "
+            ret_str += b[to_index(x, y, width, 1)] + " "
         ret_str += "\n"
+
+    ret_str += "\n"
+    for y in range(0, height):
+        for x in range(0, width):
+            ret_str += b[to_index(x, y, width, 2)] + " "
+        ret_str += "\n"
+
     return ret_str
 
 
@@ -94,22 +101,3 @@ def convert_board(b_original):
     for char in b_original:
         ret_list.append(int(char, 36))
     return ret_list
-
-if __name__ == "__main__":
-    b = "e4...a.....519d8\
-        .2.....b.dec..5.\
-        .8..76....b...3c\
-        .9.a...87..3..f.\
-        9...e...37fd.c.1\
-        ...f...a.e5..d..\
-        ...c...fa.....7.\
-        d7b....9..c..4.0\
-        ..84d9.c....ab.3\
-        ...9.5.768......\
-        ..d...4..a......\
-        ..f26.b0......e.\
-        .e.7c35..4.1d..6\
-        .fa.....2.6..1..\
-        .......6....0e8f\
-        8.c6a..........9"
-    print_board(convert_board(b))

@@ -5,11 +5,14 @@
 |         0 |    6295    21708 |    2098       0        0     nan |  0.000 % |
 ==============================================================================
 restarts              : 1
-conflicts             : 14             (1750 /sec)
-decisions             : 116            (14500 /sec)
-propagations          : 2491           (311375 /sec)
+conflicts             : 14             (3500 /sec)
+decisions             : 116            (29000 /sec)
+propagations          : 2491           (622750 /sec)
 conflict literals     : 133            (0.00 % deleted)
-Memory used           : 1.81 MB
-CPU time              : 0.008 s
+Memory used           : 1.80 MB
+CPU time              : 0.004 s
 
 SATISFIABLE
+Generating Board Requirements...
+Board Requirements Generated
+Running SAT solver

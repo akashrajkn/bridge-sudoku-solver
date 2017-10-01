@@ -7,11 +7,19 @@ def to_base(i, j, k, base, sudoku_num):
 
 # Returns a 3 tuple (i, j, k)
 def from_base(n, base):
+    sudoku_num = 1
+    if abs(int(n)) > 729:
+        sudoku_num = 2
+        if int(n) < 0:
+            n = int(n) + 729
+        else:
+            n = int(n) - 729
+
     n = int(n) - 1
     k = n % base + 1
     j = int(((n - (k - 1)) / base) % base + 1)
     i = int(((n - (k - 1)) - base * (j - 1))/ (base * base)) + 1
-    return (i, j, k)
+    return (i, j, k, sudoku_num)
 
 #converts 2D coordinates to an index in a string
 def to_index(i, j, base, sudoku_num):
