@@ -53,7 +53,7 @@ def parse_minisat_output(output, m, n, total_givens, bridge_givens):
                 print('Exception in parse_minisat_output + propagations: ', str(e))
         elif line.find('conflict literals') > -1:
             try:
-                packet['conflict_literals'] = parsed_line.split()[2]
+                packet['conflict_literals'] = parsed_line.split()[3]
             except Exception as e:
                 packet['conflict_literals'] = 'NaN'
                 print('Exception in parse_minisat_output + conflict_literals: ', str(e))
@@ -72,8 +72,8 @@ def parse_minisat_output(output, m, n, total_givens, bridge_givens):
                 packet['cpu_time'] = 'NaN'
                 print('Exception in parse_minisat_output + CPU time: ', str(e))
 
-    packet['m'] = overlap_m
-    packet['n'] = overlap_n
+    packet['m'] = m
+    packet['n'] = n
     packet['total_givens'] = total_givens
     packet['bridge_givens'] = bridge_givens
 

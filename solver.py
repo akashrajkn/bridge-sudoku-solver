@@ -9,7 +9,7 @@ from output_parser import parse_minisat_output
 import argparse
 parser = argparse.ArgumentParser(description="Solve a bridge-sudoku puzzle")
 parser.add_argument('inputfile', type=argparse.FileType('r'))
-parser.add_argument('outputfile', type=argparse.FileType('wb'))
+parser.add_argument('outputfile', type=argparse.FileType('a'))
 parser.add_argument('minisatexe')
 parser.add_argument('tmp_out', type=argparse.FileType('w'))
 parser.add_argument('tmp_in')
@@ -127,10 +127,22 @@ try:
     output, err = p.communicate(b"input data that is passed to subprocess' stdin")
     rc = p.returncode
 
-    args.outputfile.write(output)
+    # args.outputfile.write(output)
 
     # TODO: total_givens, bridge_givens need to be sent
-    parse_minisat_output(output.decode("utf-8"), overlap_m, overlap_n, 0, 0)
+    results = parse_minisat_output(output.decode("utf-8"), overlap_m, overlap_n, 0, 0)
+    result_keys = ['m', 'n',  'total_givens', 'bridge_givens', 'restarts', 'conflicts',
+                   'decisions', 'propagations', 'conflict_literals', 'memory_used',
+                   'cpu_time']
+
+    line = ''
+    for k in result_keys:
+        line += str(results[k])
+        line += ','
+    line = line[:-1]
+    line += '\n'
+    args.outputfile.write(line)
+
 
 except OSError:
     print ("Fatal Error: Could not run", args.minisatexe)
@@ -155,29 +167,29 @@ if (solved_board[0] != "SAT"):
 # Remove "SAT"
 solved_board.pop(0)
 
-# convert to string
-sb1 = ""
-sb2 = ""
-for s in solved_board:
-    try:
-        l = int(s)
-        if l > 0:
-            (i, j, k, sudoku_num) = from_base(l, size)
-            if sudoku_num == 1:
-                sb1 += base10toN(k, 36)
-            else:
-                sb2 += base10toN(k, 36)
-    except:
-        pass
-
-# rebuild the solved board non-transpose
-fixed = ""
-for i in range(0, size):
-    for j in range(0, size):
-        fixed += sb1[to_index(i, j, size, 1)]
-
-for i in range(0, size):
-    for j in range(0, size):
-        fixed += sb2[to_index(i, j, size, 1)]
-
-# args.outputfile.write(output_board(fixed))
+# # convert to string
+# sb1 = ""
+# sb2 = ""
+# for s in solved_board:
+#     try:
+#         l = int(s)
+#         if l > 0:
+#             (i, j, k, sudoku_num) = from_base(l, size)
+#             if sudoku_num == 1:
+#                 sb1 += base10toN(k, 36)
+#             else:
+#                 sb2 += base10toN(k, 36)
+#     except:
+#         pass
+#
+# # rebuild the solved board non-transpose
+# fixed = ""
+# for i in range(0, size):
+#     for j in range(0, size):
+#         fixed += sb1[to_index(i, j, size, 1)]
+#
+# for i in range(0, size):
+#     for j in range(0, size):
+#         fixed += sb2[to_index(i, j, size, 1)]
+#
+# # args.outputfile.write(output_board(fixed))
