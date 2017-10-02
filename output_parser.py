@@ -20,7 +20,7 @@
 #     'cpu_time': ''
 # }
 
-def parse_minisat_output(output, m, n, total_givens, bridge_givens):
+def parse_minisat_output(output, m, n, iteration, total_givens, bridge_givens):
 
     results = output.split('\n')
 
@@ -74,12 +74,13 @@ def parse_minisat_output(output, m, n, total_givens, bridge_givens):
 
     packet['m'] = m
     packet['n'] = n
+    packet['iteration'] = iteration
     packet['total_givens'] = total_givens
     packet['bridge_givens'] = bridge_givens
 
-    print("results")
-    print("-----------------")
-    print (packet)
-    print("-----------------")
+    # print("results")
+    # print("-----------------")
+    # print (packet)
+    # print("-----------------")
 
     return packet
