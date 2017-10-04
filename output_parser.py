@@ -1,3 +1,4 @@
+# Packet output
 # {
 #     'm': '',
 #     'n': '',
@@ -23,11 +24,11 @@
 def parse_minisat_output(output, m, n, iteration, total_givens, bridge_givens):
 
     results = output.split('\n')
-
     packet = {}
 
     for line in results:
         parsed_line = ' '.join(line.split())
+
         if line.find('restarts') > -1:
             try:
                 packet['restarts'] = parsed_line.split()[2]
@@ -77,10 +78,5 @@ def parse_minisat_output(output, m, n, iteration, total_givens, bridge_givens):
     packet['iteration'] = iteration
     packet['total_givens'] = total_givens
     packet['bridge_givens'] = bridge_givens
-
-    # print("results")
-    # print("-----------------")
-    # print (packet)
-    # print("-----------------")
 
     return packet

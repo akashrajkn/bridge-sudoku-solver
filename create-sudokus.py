@@ -28,21 +28,16 @@ for m in range(1, 10):
                 sudoku = sudoku.replace(' ', '')
                 sudoku = list(sudoku)
 
-                # print(sudoku)
                 total_squares= 162 - m*n
                 total_givens = int((162 - m*n)*21 / 100)
 
                 indices = list(range(0, 161))
-
                 for num in range(0, total_squares - total_givens):
 
                     random.shuffle(indices)
                     index = indices.pop()
                     sudoku[index] = 0
                     # FIXME: remove in overlap region
-                    # if index in overlap_region.keys():
-                    #     sudoku[overlap_region[index]] = 0
-
                     # TODO: Make this change
                     # if sudoku[index] == 0:
                     #     pass

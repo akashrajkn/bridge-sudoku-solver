@@ -32,25 +32,19 @@ for m in range(1, 10):
         folder_name = str(m) + 'x' + str(n)
 
         for iteration in range(1, 1001):
-            filepath = 'datasets/' + folder_name + '/' + str(iteration) + '.txt'
+            filepath = 'problems/' + folder_name + '/' + str(iteration) + '.txt'
 
             try:
                 with open(filepath, "r") as f_in:
                     sudoku = f_in.read()
                 board = convert_board(sudoku)
 
-                # -----------------------------------------
-                # CONVERT TO DIMACS
-                # -----------------------------------------
                 size = int(sqrt(len(board)/2))
                 numbers = size
 
-                # The number of individual possibilities
                 variables = size * size * numbers * 2
                 dimacs_output = ""
                 clauses = 0
-
-                # print ("Generating Board Requirements...")
 
                 for sudoku_num in [1, 2]:
                     dimacs_output += "c the board requirements for {0}\n".format(sudoku_num)
@@ -134,20 +128,11 @@ for m in range(1, 10):
                 temp_file.write(dimacs_output)
                 temp_file.close()
 
-
-                # print ("Board Requirements Generated")
-
-                # -----------------------------------------
-                # Run minisat
-                # -----------------------------------------
-                # print ("Running SAT solver")
                 try:
                     # TODO: Add rnd-frq option for generating
                     p = Popen([args.minisatexe, args.tmp_out, args.tmp_in], stdin=PIPE, stdout=PIPE, stderr=PIPE)
                     output, err = p.communicate(b"input data that is passed to subprocess' stdin")
                     rc = p.returncode
-
-                    # args.outputfile.write(output)
 
                     total_givens = count_total_givens(sudoku)
 

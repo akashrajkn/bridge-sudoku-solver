@@ -11,7 +11,7 @@ parser.add_argument('minisatexe')
 parser.add_argument('temp_file')
 parser.add_argument('minisat_output')
 args = parser.parse_args()
-# print(args)
+
 
 def get_dimacs_output(board, m, n):
     size = int(sqrt(len(board)/2))
@@ -20,8 +20,6 @@ def get_dimacs_output(board, m, n):
     variables = size * size * numbers * 2
     dimacs_output = ""
     clauses = 0
-
-    # print ("Generating Board Requirements...")
 
     for sudoku_num in [1, 2]:
         dimacs_output += "c the board requirements for {0}\n".format(sudoku_num)
@@ -103,13 +101,11 @@ def get_dimacs_output(board, m, n):
 
 def call_minisat_for_data_generation(sudoku, m, n):
     dimacs_output = get_dimacs_output(sudoku, m, n)
-    # Write to a temporary file
 
     temp_file = open(args.temp_file, 'w')
     temp_file.write(dimacs_output)
     temp_file.close()
-    # print(args.minisat_output)
-    # Call minisat
+
     try:
         # TODO: Add rnd-frq option for generating
         p = Popen([args.minisatexe, temp_file.name,
@@ -117,17 +113,12 @@ def call_minisat_for_data_generation(sudoku, m, n):
                    stdout=PIPE, stderr=PIPE)
         output, err = p.communicate(b"input data that is passed to subprocess' stdin")
         rc = p.returncode
-        # print('HASDHFHASDF')
-
-        # args.outputfile.write(output)
     except OSError:
         print ("Fatal Error: Could not run ", '~/./minisat')
         exit(1)
 
     with open(args.minisat_output, "r") as f_in:
         solved_board = f_in.read()
-        # print('solved_board')
-        # print(solved_board)
 
     # Clean solved board
     solved_board = solved_board.split()
@@ -152,7 +143,6 @@ def call_minisat_for_data_generation(sudoku, m, n):
         except:
             pass
 
-    # rebuild the solved board non-transpose
     fixed = ""
     for i in range(0, 9):
         for j in range(0, 9):
@@ -164,14 +154,10 @@ def call_minisat_for_data_generation(sudoku, m, n):
 
     return 1, fixed
 
-# m is overlap row, n is overlap column, i is the number of iterations
 for m in range(1, 10):
     for n in range(1, 10):
         print ('m = ' + str(m) + ' ; n = ' + str(n))
         folder_name = str(m) + 'x' + str(n)
-        # Create folder if it doesn't exist
-        # if not os.path.exists('datasets/' + folder_name):
-        #     os.makedirs('datasets/' + folder_name)
 
         for i in range(1, 1001):
             numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -196,11 +182,3 @@ for m in range(1, 10):
 
                 f = open(filename, 'w+')
                 f.write(output_board(fixed))
-
-            # print(sudoku, m, n)
-            # print("\n")
-            # initialize empty array
-            # randomly choose row and column
-            # if row + column in bridge area, add to second sudoku
-            # Create first draft of the dataset
-            # Number of total givens = total_area * 0.20987 - remove the remaining numbers
